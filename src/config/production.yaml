@@ -1,0 +1,26 @@
+# 生产环境配置
+
+env: production
+
+# 项目配置
+app:
+  # 前缀地址
+  prefix: '/api'
+  # 端口
+  port: 8001
+  # 日志路径
+  logPath: '../logs'
+
+# 数据库配置
+db:
+  mysql:
+    host: 150.158.137.166
+    username: root
+    password: root123ROOT.
+    database: wemobile
+    port: 3306
+
+# jwt
+jwt:
+  secret: abcdefghijklmnopqrstuvwxyz
+  expiresIn: 2h
