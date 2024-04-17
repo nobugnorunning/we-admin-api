@@ -8,6 +8,7 @@ import {
   MinLength,
   Validate,
 } from "class-validator";
+import { PageDTO } from "../base/base.dto";
 import { PasswordValidator } from "../base/custom.validate";
 
 export class CreateUserDTO {
@@ -83,4 +84,26 @@ export class UpdateUserDTO {
   @IsString()
   @IsOptional()
   sign?: string;
+}
+
+export class UserFilterDTO extends PageDTO {
+  @ApiProperty({ description: "用户名" })
+  @IsString()
+  @IsOptional()
+  userName?: string;
+
+  @ApiProperty({ description: "手机号" })
+  @IsString()
+  @IsOptional()
+  phone?: string;
+
+  @ApiProperty({ description: "邮箱" })
+  @IsString()
+  @IsOptional()
+  email?: string;
+
+  @ApiProperty({ description: "组织id" })
+  @IsString()
+  @IsOptional()
+  orgId?: string;
 }

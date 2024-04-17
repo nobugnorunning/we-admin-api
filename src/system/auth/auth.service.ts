@@ -2,9 +2,7 @@ import { forwardRef, HttpException, Inject, Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import * as argon2 from "argon2";
-import { omit } from "lodash";
 import ms from "ms";
-import { UserEntity } from "../user/user.entity";
 import { UserService } from "../user/user.service";
 import { LoginByUserNameDTO, ResetPasswordDTO } from "./auth.dto";
 
@@ -46,11 +44,10 @@ export class AuthService {
     userName: string;
     phone: string;
   }) {
-    console.log(ms(await this.configService.get("jwt.expiresIn")));
     return await this.jwtService.signAsync(payload, {
       secret: await this.configService.get("jwt.secret"),
+      // 这里需要将ms转化为秒，因为jwt模块的expiresIn参数是以秒为单位的
       expiresIn:
-        // 这里需要将ms转化为秒，因为jwt模块的expiresIn参数是以秒为单位的
         Number(ms(await this.configService.get("jwt.expiresIn"))) / 1000,
     });
   }
@@ -60,7 +57,6 @@ export class AuthService {
    * @param loginInfo LoginByUserNameDto
    */
   async loginByUserName(loginInfo: LoginByUserNameDTO): Promise<{
-    userInfo: Omit<UserEntity, "password">;
     access_token: string;
   }> {
     const { userName, password } = loginInfo;
@@ -80,8 +76,8 @@ export class AuthService {
     });
 
     return {
-      userInfo: omit(user, "password"),
       access_token: token,
+      // TODO： 后续这里应该返回别的信息，例如 refresh_token
     };
   }
 

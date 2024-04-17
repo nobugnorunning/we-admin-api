@@ -1,9 +1,12 @@
 import { forwardRef, HttpException, Inject, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
+import { createQueryBuilderWithOrder } from "../../utils/qb.utils";
+// import { createQueryBuilderWithOrder } from "../../utils/qb.utils";
+// import { Utils } from "../../utils/utils";
 import { AuthService } from "../auth/auth.service";
-import { PageDTO, PageResult } from "../base/base.dto";
-import { CreateUserDTO, UpdateUserDTO } from "./user.dto";
+import { PageResult } from "../base/base.dto";
+import { CreateUserDTO, UpdateUserDTO, UserFilterDTO } from "./user.dto";
 import { UserEntity } from "./user.entity";
 
 @Injectable()
@@ -39,12 +42,34 @@ export class UserService {
    * 查询用户分页
    * @param pageDto
    */
-  async findPage(pageDto: PageDTO): Promise<PageResult> {
-    const { pageNum, pageSize } = pageDto;
-    const [data, total] = await this.userRepo.findAndCount({
-      skip: (pageNum - 1) * pageSize,
-      take: pageSize,
-    });
+  async findPage(pageDto: UserFilterDTO): Promise<PageResult> {
+    const { pageNum, pageSize, userName, phone, email, orgId, sort } = pageDto;
+
+    const qb = await createQueryBuilderWithOrder("user", this.userRepo, sort);
+
+    // 添加 where 条件
+    if (userName) {
+      qb.where("user.userName like :userName", {
+        userName: `%${userName}%`,
+      });
+    }
+
+    if (phone) {
+      qb.andWhere("user.phone like :phone", { phone: `%${phone}%` });
+    }
+
+    if (email) {
+      qb.andWhere("user.email like :email", { email: `%${email}%` });
+    }
+
+    if (orgId) {
+      qb.andWhere("user.orgId = :orgId", { orgId });
+    }
+
+    const [data, total] = await qb
+      .skip((pageNum - 1) * pageSize)
+      .take(pageSize)
+      .getManyAndCount();
     return {
       data,
       page: {

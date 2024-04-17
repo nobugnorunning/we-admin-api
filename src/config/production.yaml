@@ -17,7 +17,7 @@ db:
     host: 150.158.137.166
     username: root
     password: root123ROOT.
-    database: wemobile
+    database: we_admin_api
     port: 3306
 
 # jwt

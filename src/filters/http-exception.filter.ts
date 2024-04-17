@@ -22,7 +22,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       typeof exceptionResponse !== "string"
         ? exceptionResponse.message
         : exceptionResponse;
-    response.status(status).json({
+    response.status(200).json({
       ...Result.fail(status, message),
       path: request.url,
     });

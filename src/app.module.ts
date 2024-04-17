@@ -1,13 +1,13 @@
 import { Module } from "@nestjs/common";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 import { APP_GUARD } from "@nestjs/core";
 import { JwtModule } from "@nestjs/jwt";
 import { TypeOrmModule, TypeOrmModuleOptions } from "@nestjs/typeorm";
-import { ConfigModule, ConfigService } from "@nestjs/config";
 import configuration from "./config/config";
 import { AuthGuard } from "./guards/auth.guard";
-import { UserModule } from "./system/user/user.module";
 import { AuthModule } from "./system/auth/auth.module";
 import { OrganizationModule } from "./system/organization/organization.module";
+import { UserModule } from "./system/user/user.module";
 
 @Module({
   imports: [

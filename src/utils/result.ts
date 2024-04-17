@@ -18,8 +18,10 @@ export class Result {
     this.success = code === 200;
     this.message = msg;
     this.data = data || null;
-    for (const extraKey in extra) {
-      this[extraKey] = extra[extraKey];
+    if (extra) {
+      for (const extraKey in extra) {
+        this[extraKey] = extra[extraKey];
+      }
     }
     this.timestamp = dayjs(new Date()).format("YYYY-MM-DD HH:mm:ss");
   }

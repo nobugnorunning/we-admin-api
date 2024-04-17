@@ -1,5 +1,5 @@
 import { Body, Controller, Post } from "@nestjs/common";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { Public } from "../../decorators/public";
 import { Result } from "../../utils/result";
 import { LoginByUserNameDTO, ResetPasswordDTO } from "./auth.dto";
@@ -10,13 +10,15 @@ import { AuthService } from "./auth.service";
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post("loginByUserName")
+  @ApiOperation({ summary: "登录" })
+  @Post("login")
   @Public()
   async login(@Body() body: LoginByUserNameDTO) {
     const data = await this.authService.loginByUserName(body);
     return Result.ok(data, "登录成功");
   }
 
+  @ApiOperation({ summary: "密码重置" })
   @Post("resetPassword")
   async resetPassword(@Body() body: ResetPasswordDTO) {
     await this.authService.resetPassword(body);
