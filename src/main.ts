@@ -45,7 +45,8 @@ async function bootstrap() {
         console.log(error);
         throw new HttpException(
           {
-            message: `invalid param: ${error[0].property}, ${JSON.stringify(error[0].constraints)}`,
+            // message: `invalid param: ${error[0].property}, ${JSON.stringify(error[0].constraints)}`,
+            message: `invalid param: ${error[0].property}`,
           },
           400,
         );

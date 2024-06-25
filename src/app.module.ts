@@ -8,6 +8,7 @@ import { AuthGuard } from "./guards/auth.guard";
 import { AuthModule } from "./system/auth/auth.module";
 import { OrganizationModule } from "./system/organization/organization.module";
 import { UserModule } from "./system/user/user.module";
+import { MenuModule } from './system/menu/menu.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { UserModule } from "./system/user/user.module";
     AuthModule,
     JwtModule,
     OrganizationModule,
+    MenuModule,
   ],
   controllers: [],
   providers: [

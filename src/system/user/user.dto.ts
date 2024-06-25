@@ -86,7 +86,29 @@ export class UpdateUserDTO {
   sign?: string;
 }
 
-export class UserFilterDTO extends PageDTO {
+export class UserFilterDTO {
+  @ApiProperty({ description: "用户名" })
+  @IsString()
+  @IsOptional()
+  userName?: string;
+
+  @ApiProperty({ description: "手机号" })
+  @IsString()
+  @IsOptional()
+  phone?: string;
+
+  @ApiProperty({ description: "邮箱" })
+  @IsString()
+  @IsOptional()
+  email?: string;
+
+  @ApiProperty({ description: "组织id" })
+  @IsString()
+  @IsOptional()
+  orgId?: string;
+}
+
+export class UserPageFilterDTO extends PageDTO {
   @ApiProperty({ description: "用户名" })
   @IsString()
   @IsOptional()

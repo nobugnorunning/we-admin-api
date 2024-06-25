@@ -6,11 +6,12 @@ import {
   Param,
   Patch,
   Post,
+  Req,
 } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { Public } from "../../decorators/public";
 import { Result } from "../../utils/result";
-import { CreateUserDTO, UpdateUserDTO, UserFilterDTO } from "./user.dto";
+import { CreateUserDTO, UpdateUserDTO, UserPageFilterDTO } from "./user.dto";
 import { UserService } from "./user.service";
 
 @ApiTags("用户")
@@ -32,23 +33,30 @@ export class UserController {
   }
 
   @ApiOperation({ summary: "查找用户列表" })
-  @Get()
-  async findList() {
+  @Post("list")
+  async list() {
     const data = await this.userService.findList();
     return Result.ok(data);
   }
 
   @ApiOperation({ summary: "分页查找用户" })
-  @Get("page")
-  async findPage(@Param() body: UserFilterDTO) {
+  @Post("page")
+  async page(@Body() body: UserPageFilterDTO) {
     const pageResult = await this.userService.findPage(body);
     return Result.page(pageResult);
   }
 
   @ApiOperation({ summary: "根据id查找用户" })
   @Get(":id")
-  async findById(@Param("id") id: string) {
+  async detail(@Param("id") id: string) {
     return Result.ok(await this.userService.findByUserId(id));
+  }
+
+  @ApiOperation({ summary: "获取用户信息" })
+  @Get()
+  async userInfo(@Req() req: Request) {
+    const user = await this.userService.findByUserId(req["user"]["id"]);
+    return Result.ok(user);
   }
 
   @ApiOperation({ summary: "删除用户" })

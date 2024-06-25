@@ -10,8 +10,8 @@ import { PasswordValidator } from "../base/custom.validate";
 
 export class LoginByUserNameDTO {
   @ApiProperty({ description: "用户名" })
-  @IsNotEmpty({ message: "用户名不能为空" })
-  @IsString({ message: "用户名必须为 string" })
+  @IsNotEmpty()
+  @IsString()
   @MinLength(1, { message: "用户名至少1个字符" })
   @MaxLength(20, { message: "用户名最多20个字符" })
   readonly userName: string;

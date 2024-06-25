@@ -6,7 +6,7 @@ import { createQueryBuilderWithOrder } from "../../utils/qb.utils";
 // import { Utils } from "../../utils/utils";
 import { AuthService } from "../auth/auth.service";
 import { PageResult } from "../base/base.dto";
-import { CreateUserDTO, UpdateUserDTO, UserFilterDTO } from "./user.dto";
+import { CreateUserDTO, UpdateUserDTO, UserPageFilterDTO } from "./user.dto";
 import { UserEntity } from "./user.entity";
 
 @Injectable()
@@ -42,8 +42,8 @@ export class UserService {
    * 查询用户分页
    * @param pageDto
    */
-  async findPage(pageDto: UserFilterDTO): Promise<PageResult> {
-    const { pageNum, pageSize, userName, phone, email, orgId, sort } = pageDto;
+  async findPage(pageDto: UserPageFilterDTO): Promise<PageResult> {
+    const { current, size, userName, phone, email, orgId, sort } = pageDto;
 
     const qb = await createQueryBuilderWithOrder("user", this.userRepo, sort);
 
@@ -67,16 +67,14 @@ export class UserService {
     }
 
     const [data, total] = await qb
-      .skip((pageNum - 1) * pageSize)
-      .take(pageSize)
+      .skip((current - 1) * size)
+      .take(size)
       .getManyAndCount();
     return {
       data,
-      page: {
-        total,
-        current: pageNum,
-        size: pageSize,
-      },
+      total,
+      current,
+      size,
     };
   }
 

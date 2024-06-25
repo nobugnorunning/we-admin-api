@@ -6,12 +6,12 @@ export class PageDTO {
   @ApiProperty({ description: "当前获取的页码" })
   // @IsNumber()
   @IsNotEmpty()
-  pageNum: number;
+  current: number;
 
   @ApiProperty({ description: "当前获取的数量" })
   // @IsNumber()
   @IsNotEmpty()
-  pageSize: number;
+  size: number;
 
   @ApiProperty({ description: "排序字段" })
   // @Validate(SortValidator)
@@ -21,9 +21,7 @@ export class PageDTO {
 
 export class PageResult {
   data: any;
-  page: {
-    current: number;
-    size: number;
-    total: number;
-  };
+  current: number;
+  size: number;
+  total: number;
 }

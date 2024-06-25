@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import { PageResult } from "../system/base/base.dto";
+import { pick } from "lodash";
 
 export class Result {
   private code: number;
@@ -35,6 +36,10 @@ export class Result {
   }
 
   static page(result: PageResult) {
-    return new Result(200, "操作成功", result.data, result.page);
+    const page = pick(result, ["current", "size", "total"]);
+    return new Result(200, "操作成功", result.data, {
+      ...page,
+      hasNextPage: page.current * page.size < page.total,
+    });
   }
 }
